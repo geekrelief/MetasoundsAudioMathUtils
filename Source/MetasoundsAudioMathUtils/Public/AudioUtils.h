@@ -86,7 +86,7 @@ public:
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
 };
 
-class FWrap
+class FReflect
 {
 public:
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);

@@ -98,7 +98,7 @@ void FSqrt::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const in
 	}
 }
 
-float sWrap(float input)
+float sReflect(float input)
 {
 	while (input < -1.0f || input > 1.0f)
 	{
@@ -115,11 +115,11 @@ float sWrap(float input)
 	return input;
 }
 
-void FWrap::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples)
+void FReflect::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples)
 {
 	for (int32 Index = 0; Index < InNumSamples; ++Index)
 	{
-		OutBuffer[Index] = sWrap(InBuffer[Index]);
+		OutBuffer[Index] = sReflect(InBuffer[Index]);
 	}
 }
 

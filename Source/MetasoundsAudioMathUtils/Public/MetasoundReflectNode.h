@@ -10,16 +10,16 @@
 namespace Metasound
 {
 	//------------------------------------------------------------------------------------
-	// FWrapOperator
+	// FReflectOperator
 	//------------------------------------------------------------------------------------
-	class FWrapOperator : public TExecutableOperator<FWrapOperator>
+	class FReflectOperator : public TExecutableOperator<FReflectOperator>
 	{
 	public:
 		static const FNodeClassMetadata& GetNodeInfo();
 		static const FVertexInterface& GetVertexInterface();
 		static TUniquePtr<IOperator> CreateOperator(const FBuildOperatorParams& InParams, FBuildResults& OutErrors);
 
-		FWrapOperator(const FOperatorSettings& InSettings, const FAudioBufferReadRef& InAudioInput);
+		FReflectOperator(const FOperatorSettings& InSettings, const FAudioBufferReadRef& InAudioInput);
 
 		virtual void BindInputs(FInputVertexInterfaceData& InOutVertexData) override;
 		virtual void BindOutputs(FOutputVertexInterfaceData& InOutVertexData) override;
@@ -30,25 +30,25 @@ namespace Metasound
 		FAudioBufferReadRef	 AudioInput;
 		FAudioBufferWriteRef AudioOutput;
 
-		DSPProcessing::FWrap WrapDSPProcessor;
+		DSPProcessing::FReflect ReflectDSPProcessor;
 
 	};
 
 	//------------------------------------------------------------------------------------
-	// FWrapNode
+	// FReflectNode
 	//------------------------------------------------------------------------------------
-	class METASOUNDSAUDIOMATHUTILS_API FWrapNode : public FNodeFacade
+	class METASOUNDSAUDIOMATHUTILS_API FReflectNode : public FNodeFacade
 	{
 	public:
 		// Constructor used by the Metasound Frontend.
-		FWrapNode(const FNodeInitData& InitData)
-			: FNodeFacade(InitData.InstanceName, InitData.InstanceID, TFacadeOperatorClass<FWrapOperator>())
+		FReflectNode(const FNodeInitData& InitData)
+			: FNodeFacade(InitData.InstanceName, InitData.InstanceID, TFacadeOperatorClass<FReflectOperator>())
 		{
 
 		}
 
-		FWrapNode(FNodeData InNodeData, TSharedRef<const FNodeClassMetadata> InClassMetadata)
-			: FNodeFacade(InNodeData, InClassMetadata, TFacadeOperatorClass<FWrapOperator>())
+		FReflectNode(FNodeData InNodeData, TSharedRef<const FNodeClassMetadata> InClassMetadata)
+			: FNodeFacade(InNodeData, InClassMetadata, TFacadeOperatorClass<FReflectOperator>())
 		{
 
 		}

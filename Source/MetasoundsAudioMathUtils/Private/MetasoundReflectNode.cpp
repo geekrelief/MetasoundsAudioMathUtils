@@ -1,13 +1,13 @@
 // Copyright Christopher Wratt 2024.
 // All code under MIT license: see https://mit-license.org/
 
-#include "MetasoundWrapNode.h"
+#include "MetasoundReflectNode.h"
 
-#define LOCTEXT_NAMESPACE "MetasoundNodeTemplate_WrapNode"
+#define LOCTEXT_NAMESPACE "MetasoundNodeTemplate_ReflectNode"
 
 namespace Metasound
 {
-	namespace WrapNode
+	namespace ReflectNode
 	{
 		// Input params
 		METASOUND_PARAM(InParamNameAudioInput, "In", "Audio input.")
@@ -16,30 +16,30 @@ namespace Metasound
 	}
 
 	//------------------------------------------------------------------------------------
-	// FWrapOperator
+	// FReflectOperator
 	//------------------------------------------------------------------------------------
-	FWrapOperator::FWrapOperator(const FOperatorSettings& InSettings, const FAudioBufferReadRef& InAudioInput)
+	FReflectOperator::FReflectOperator(const FOperatorSettings& InSettings, const FAudioBufferReadRef& InAudioInput)
 		: AudioInput(InAudioInput)
 		, AudioOutput(FAudioBufferWriteRef::CreateNew(InSettings))
 	{
 
 	}
 
-	const FNodeClassMetadata& FWrapOperator::GetNodeInfo()
+	const FNodeClassMetadata& FReflectOperator::GetNodeInfo()
 	{
 		auto InitNodeInfo = []() -> FNodeClassMetadata
 			{
 				FNodeClassMetadata Info;
 
-				Info.ClassName = { TEXT("UE"), TEXT("Wrap (Audio)"), TEXT("Audio") };
+				Info.ClassName = { TEXT("UE"), TEXT("Reflect (Audio)"), TEXT("Audio") };
 				Info.MajorVersion = 1;
 				Info.MinorVersion = 0;
-				Info.DisplayName = LOCTEXT("Metasound_WrapDisplayName", "Wrap (Audio)");
-				Info.Description = LOCTEXT("Metasound_WrapNodeDescription", "Applies Wrap to the audio input.");
+				Info.DisplayName = LOCTEXT("Metasound_ReflectDisplayName", "Reflect (Audio)");
+				Info.Description = LOCTEXT("Metasound_ReflectNodeDescription", "Applies Reflect to the audio input.");
 				Info.Author = PluginAuthor;
 				Info.PromptIfMissing = PluginNodeMissingPrompt;
 				Info.DefaultInterface = GetVertexInterface();
-				Info.CategoryHierarchy = { LOCTEXT("Metasound_WrapNodeCategory", "Utils") };
+				Info.CategoryHierarchy = { LOCTEXT("Metasound_ReflectNodeCategory", "Utils") };
 
 				return Info;
 			};
@@ -49,23 +49,23 @@ namespace Metasound
 		return Info;
 	}
 
-	void FWrapOperator::BindInputs(FInputVertexInterfaceData& InOutVertexData)
+	void FReflectOperator::BindInputs(FInputVertexInterfaceData& InOutVertexData)
 	{
-		using namespace WrapNode;
+		using namespace ReflectNode;
 
 		InOutVertexData.BindReadVertex(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), AudioInput);
 	}
 
-	void FWrapOperator::BindOutputs(FOutputVertexInterfaceData& InOutVertexData)
+	void FReflectOperator::BindOutputs(FOutputVertexInterfaceData& InOutVertexData)
 	{
-		using namespace WrapNode;
+		using namespace ReflectNode;
 
 		InOutVertexData.BindReadVertex(METASOUND_GET_PARAM_NAME(OutParamNameAudio), AudioOutput);
 	}
 
-	const FVertexInterface& FWrapOperator::GetVertexInterface()
+	const FVertexInterface& FReflectOperator::GetVertexInterface()
 	{
-		using namespace WrapNode;
+		using namespace ReflectNode;
 
 		static const FVertexInterface Interface(
 			FInputVertexInterface(
@@ -79,34 +79,34 @@ namespace Metasound
 		return Interface;
 	}
 
-	TUniquePtr<IOperator> FWrapOperator::CreateOperator(const FBuildOperatorParams& InParams, FBuildResults& OutErrors)
+	TUniquePtr<IOperator> FReflectOperator::CreateOperator(const FBuildOperatorParams& InParams, FBuildResults& OutErrors)
 	{
-		using namespace WrapNode;
+		using namespace ReflectNode;
 
 		const FInputVertexInterfaceData& InputInterface = InParams.InputData;
 
 		FAudioBufferReadRef AudioIn = InputInterface.GetOrCreateDefaultDataReadReference<FAudioBuffer>(METASOUND_GET_PARAM_NAME(InParamNameAudioInput), InParams.OperatorSettings);
 
-		return MakeUnique<FWrapOperator>(InParams.OperatorSettings, AudioIn);
+		return MakeUnique<FReflectOperator>(InParams.OperatorSettings, AudioIn);
 	}
 
-	void FWrapOperator::Execute()
+	void FReflectOperator::Execute()
 	{
 		const float* InputAudio = AudioInput->GetData();
 		float* OutputAudio = AudioOutput->GetData();
 
 		const int32 NumSamples = AudioInput->Num();
 
-		WrapDSPProcessor.ProcessAudioBuffer(InputAudio, OutputAudio, NumSamples);
+		ReflectDSPProcessor.ProcessAudioBuffer(InputAudio, OutputAudio, NumSamples);
 	}
 
 
-	FNodeClassMetadata FWrapNode::CreateNodeClassMetadata()
+	FNodeClassMetadata FReflectNode::CreateNodeClassMetadata()
 	{
-		return FWrapOperator::GetNodeInfo();
+		return FReflectOperator::GetNodeInfo();
 	}
 
-	METASOUND_REGISTER_NODE(FWrapNode)
+	METASOUND_REGISTER_NODE(FReflectNode)
 }
 
 #undef LOCTEXT_NAMESPACE
