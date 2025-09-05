@@ -65,6 +65,12 @@ private:
 	float mPreviousInputSample = 0.0f;
 };
 
+class FReflect
+{
+public:
+	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
+};
+
 class FSamphold
 {
 public:
@@ -86,10 +92,9 @@ public:
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
 };
 
-class FReflect
+class FWrap
 {
 public:
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
 };
-
 } // namespace DSPProcessing
