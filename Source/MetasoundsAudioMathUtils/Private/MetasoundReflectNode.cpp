@@ -36,7 +36,7 @@ namespace Metasound
 				Info.MinorVersion = 0;
 				Info.DisplayName = LOCTEXT("Metasound_ReflectDisplayName", "Reflect (Audio)");
 				Info.Description = LOCTEXT("Metasound_ReflectNodeDescription", "Applies Reflect to the audio input.");
-				Info.Author = PluginAuthor;
+				Info.Author = "geekrelief";
 				Info.PromptIfMissing = PluginNodeMissingPrompt;
 				Info.DefaultInterface = GetVertexInterface();
 				Info.CategoryHierarchy = { LOCTEXT("Metasound_ReflectNodeCategory", "Utils") };

@@ -71,6 +71,12 @@ public:
 	void ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const int32 InNumSamples);
 };
 
+class FRZero
+{
+public:
+	float ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float InA, const float InPriorSample, const int32 InNumSamples);
+};
+
 class FSamphold
 {
 public:
