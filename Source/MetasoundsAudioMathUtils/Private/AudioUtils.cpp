@@ -126,10 +126,10 @@ namespace DSPProcessing
 	float FRZero::ProcessAudioBuffer(const float* InBuffer, float* OutBuffer, const float InA, const float InPriorSample, const int32 InNumSamples)
 	{
 		float Prior = isnan(InPriorSample) ? InBuffer[0] : InPriorSample;
-		for (int32 Index = 0; Index < InNumSamples; ++Index)
+		OutBuffer[0] = InBuffer[0] - InA * Prior;
+		for (int32 Index = 1; Index < InNumSamples; ++Index)
 		{
-			Prior = Index == 0 ? InPriorSample : InBuffer[Index - 1];
-			OutBuffer[Index] = InBuffer[Index] - InA * Prior;
+			OutBuffer[Index] = InBuffer[Index] - InA * InBuffer[Index -1];
 		}
 		return InBuffer[InNumSamples - 1];
 	}
